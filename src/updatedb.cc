@@ -67,7 +67,7 @@ void writeIndex(std::vector<std::string> const& paths,
   }
   /* build suffix array */
   suffix::Array array = suffix::buildArray(names);
-
+  
   /* write to file stream */
   utility::write(output, paths);
   utility::write(output, names);

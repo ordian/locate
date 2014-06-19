@@ -77,16 +77,15 @@ Array buildArray(std::vector<std::string> const& names,
                    namePosition.begin(),
                    [](int i, int j) { return i + j + 1; });
   std::vector<std::pair<int, int> > result;
-    
+
   for (int i : permutation) {
-    std::cout << i << std::endl;
     auto it = std::lower_bound(namePosition.begin(), namePosition.end(), i);
+    if (it == namePosition.end()) it = namePosition.end() - 1;
     size_t position = it - namePosition.begin();
-    size_t offset   = i - (*it);
+    size_t offset   = i - namePosition[position];
     if (position < names.size() && offset < names[position].length()) {
       result.push_back(std::make_pair(position, offset));
     } 
-    //  std::cout << position << ":" << (*it) << "," << i << std::endl;
   }
   
   return result;
@@ -108,8 +107,7 @@ struct Comparator {
 Array search(Array const& array,
              std::vector<std::string> const& names,
              std::string const& pattern) {
-  static Comparator cmp(names);
-  auto range = std::equal_range(array.begin(), array.end(), pattern, cmp);
+  auto range = std::equal_range(array.begin(), array.end(), pattern, Comparator(names));
   Array result;
   std::copy_if(range.first, range.second, std::back_inserter(result),
                [&](std::pair<int, int> const& p) noexcept {
