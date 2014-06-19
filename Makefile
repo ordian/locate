@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -Wall -Wextra -pedantic -std=c++11 ##-fsanitize=address -g
+CXXFLAGS := -Wall -Wextra -pedantic -std=c++11 ##-g -fsanitize=address -g
 OFLAGS   := -Ofast
 LFLAGS   := -lboost_system -lboost_filesystem -lboost_program_options -lboost_timer -lboost_thread -ltbb
 SRC_DIR  := src
