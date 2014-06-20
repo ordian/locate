@@ -6,13 +6,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <algorithm>  /* std::for_each, std::fill, std::copy, std::max,
-                         std::equal_range, std::back_inserter, std::copy */
+#include <algorithm>  /* std::copy_if, std::max, std::lower_bound,
+                         std::equal_range, std::make_pair, */
 #include <numeric>    /* std::partial_sum */
 
 #include <boost/algorithm/string/join.hpp>
 
-#include <tbb/tbb.h>  /* tbb::parallel_for */
+#include <tbb/tbb.h>  /* tbb::parallel_for, tbb::parallel_sort */
 
 
 namespace suffix {
