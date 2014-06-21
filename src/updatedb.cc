@@ -44,22 +44,23 @@ std::pair<std::string, std::string>  parse(int argc, char *argv[]) {
  *  refs (name -> list of path)
  *  suffixArray
  */
-void writeIndex(std::vector<std::string> const& paths,
+void writeIndex(tbb::concurrent_vector<fs::path> const& paths,
                 std::ofstream & output) {
 
   /* build unique names */
   typedef boost::unordered_map<std::string, std::vector<int>> map;
   map namePaths;
   int n = paths.size();
+  std::vector<std::string> pathNames(n);
   for (int i = 0; i != n; ++i) {
-    size_t found = paths[i].find_last_of(utility::getSeparator());
-    namePaths[paths[i].substr(found == std::string::npos ? 0 : found + 1)].push_back(i);
+    pathNames[i] = paths[i].string();
+    namePaths[paths[i].filename().string()].push_back(i);
   }
-  std::vector<std::pair<std::string, std::vector<int>>> nameRefs(namePaths.begin(), namePaths.end());
+
   std::vector<std::string> names;
   std::vector<std::vector<int>> refs;
-  for (auto it = std::make_move_iterator(nameRefs.begin()),
-           end = std::make_move_iterator(nameRefs.end());
+  for (auto it = std::make_move_iterator(namePaths.begin()),
+           end = std::make_move_iterator(namePaths.end());
        it != end;
        ++it) {
     names.push_back(std::move(it->first));
@@ -69,7 +70,7 @@ void writeIndex(std::vector<std::string> const& paths,
   suffix::Array array = suffix::buildArray(names);
   
   /* write to file stream */
-  utility::write(output, paths);
+  utility::write(output, pathNames);
   utility::write(output, names);
   utility::write(output, refs);
   utility::write(output, array);
@@ -108,11 +109,7 @@ int main(int argc, char *argv[]) try {
     pool.join_all();
   } while (false);
 
-  std::vector<std::string> pathStrings(paths.size());
-  std::transform(paths.begin(), paths.end(), pathStrings.begin(),
-                 [&](fs::path const& path) { return path.string(); });
-  
-  writeIndex(pathStrings, output);
+  writeIndex(paths, output);
   
   return 0;
 
