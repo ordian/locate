@@ -51,7 +51,7 @@ int main(int argc, char const* argv[]) try {
 
   std::vector<std::string> paths;
   std::vector<std::string> names;
-  std::vector<std::vector<int> > refs;
+  std::vector<std::vector<int>> refs;
   suffix::Array array;                                                         
 
   utility::read(input, paths);
@@ -61,32 +61,16 @@ int main(int argc, char const* argv[]) try {
   input.close();
 
   std::set<std::string> result;
-  for (auto &p : suffix::search(array, names, PATTERN)) {
-    for (int i : refs[p.first]) {
+  for (auto &p : suffix::search(array, names, PATTERN))
+    for (int i : refs[p.first])
       result.insert(paths[i]);
-    }
-  }
-
   
   boost::copy(
-      result | boost::adaptors::filtered([](std::string const& s)
-                                         { return fs::exists(fs::path(s));} ),
+      result | boost::adaptors::filtered([](std::string const& s) noexcept
+                                         { return fs::exists(fs::path(s)); }),
       std::ostream_iterator<std::string>(std::cout, "\n"));
   
 } catch (std::exception const& e) {
   std::cerr << e.what() << std::endl;
   return 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

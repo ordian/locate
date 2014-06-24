@@ -96,13 +96,3 @@ void write(std::ofstream &out, std::vector<T> const& v) {
 } // namespace utility
 
 #endif // UTILITY_H_
-
-
-
-
-
-
-
-
-
-

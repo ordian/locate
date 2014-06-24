@@ -27,7 +27,7 @@ struct Crawler {
   Crawler & operator=(Crawler const&) = delete;
 
   void doCrawl(fs::path const& root) {
-    m_service.post([=]() {
+    m_service.post([=]() noexcept {
         try {
           for (fs::directory_iterator dir = fs::directory_iterator(root), end;
                dir != end;
@@ -50,11 +50,3 @@ struct Crawler {
 };
 
 #endif // CRAWLER_H_
-
-
-
-
-
-
-
-

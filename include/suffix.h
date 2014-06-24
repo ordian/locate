@@ -36,7 +36,7 @@ Array buildArray(std::vector<std::string> const& names,
       position[i] = s[i];
     });
 
-  auto cmp = [&](size_t i, size_t j) {
+  auto cmp = [&](size_t i, size_t j) noexcept {
     if (position[i] != position[j])
       return position[i] < position[j];
     i += bucketSize;
@@ -65,7 +65,7 @@ Array buildArray(std::vector<std::string> const& names,
                    namePosition.end(),
                    namePosition.begin(),
                    [](int i, int j) { return i + j + 1; });
-  std::vector<std::pair<int, int> > result;
+  std::vector<std::pair<int, int>> result;
 
   for (int i : array) {
     auto it = std::lower_bound(namePosition.begin(), namePosition.end(), i);
@@ -108,16 +108,3 @@ Array search(Array const& array,
 } // namespace suffix
 
 #endif // SUFFIX_H_
-
-
-
-
-
-
-
-
-
-
-
-
-
